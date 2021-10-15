@@ -3,8 +3,8 @@ from numpy.core.fromnumeric import var
 
 a = np.array([4, 10, 12, 23, -2, -1, 0, 0, 0, -6, 3, -7])
 
-print(a[a < 0])
-print(a[a > 0])
+print((a[a < 0]).size)
+print((a[a > 0]).size)
 print(a[(a > 0) & (a % 2 == 0)])
 
 plus_three = a + 3
@@ -18,7 +18,7 @@ center = a - a.mean()
 
 
 z = (a - (a.mean()))/(a.std())
-
+print(z)
 
 import numpy as np
 # Life w/o numpy to life with numpy
@@ -202,11 +202,12 @@ print(d[d > 0])
 
 
 # Exercise 6 - Return an array of only the unique numbers in d.
-print(np.unique(d))
+unique = np.unique(d)
+print(unique)
 
 
 # Exercise 7 - Determine how many unique numbers there are in d.
-print((np.unique(d)).count())
+print(unique.size)
 
 # Exercise 8 - Print out the shape of d.
 print(np.shape(d))
