@@ -1,0 +1,71 @@
+import pandas as pd
+# 4. Use your function to obtain a connection to the 'employees' database.
+def get_db_url(db_name):
+    from env import host, user, password
+    return f'mysql+pymysql://{user}:{password}@{host}/{db_name}'
+
+employees_sql = '''
+    select * from employees limit 3000
+'''
+
+url = get_db_url('employees')
+
+employees_df = pd.read_sql(employees_sql, url)
+
+print(employees_df.head())
+
+# 5. Once you have successfully run a query:
+#   a. Intentionally make a typo in the database url. What kind of error message do you see?
+'''
+Exception has occurred: OperationalError       (note: full exception trace is shown but execution is paused at: <module>)
+(pymysql.err.OperationalError) (1044, "Access denied for user 'hopper_1554'@'%' to database 'employxees'")
+(Background on this error at: http://sqlalche.me/e/14/e3q8)
+
+The above exception was the direct cause of the following exception:
+
+  File "/Users/brent/codeup-data-science/numpy-pandas-visualization-exercises/advanced_dataframes", line 13, in <module> (Current frame)
+    df = pd.read_sql(sql, url)
+'''
+#   b. Intentionally make an error in your SQL query. What does the error message look like?
+'''
+Exception has occurred: ProgrammingError       (note: full exception trace is shown but execution is paused at: <module>)
+(pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from employees limit 3000' at line 1")
+[SQL: 
+    select d* from employees limit 3000
+]
+(Background on this error at: http://sqlalche.me/e/14/f405)
+
+The above exception was the direct cause of the following exception:
+
+  File "/Users/brent/codeup-data-science/numpy-pandas-visualization-exercises/advanced_dataframes", line 13, in <module> (Current frame)
+    df = pd.read_sql(sql, url)
+'''
+
+# 6. Read the employees and titles tables into two separate DataFrames.
+titles_sql = '''
+    select * from titles limit 3000
+'''
+
+titles_df = pd.read_sql(titles_sql, url)
+
+print(titles_df.head())
+
+# 7. How many rows and columns do you have in each DataFrame? Is that what you expected?
+# There are six columns in the 'employees' df and four columns in the 'titles' df.
+# There are only 5 rows because I used the .head() function. 
+# The result is exactlye what I expected.
+
+# 8. Display the summary statistics for each DataFrame
+print(employees_df.info())
+print(employees_df.describe())
+print(titles_df.info())
+print(titles_df.describe())
+# 9. How many unique titles are in the 'titles' DataFrame
+unique_titles_sql = '''
+select count(distinct(title)) from titles
+'''
+
+print(unique_titles_sql)
+
+
+print(titles_df.to_date.sort_values(ascending = False))
